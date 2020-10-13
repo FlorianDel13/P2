@@ -61,7 +61,9 @@ def print_reponses(reponses):
 
 def demande_rep(reponses):
     """ Désolé si elle est pas claire je dois encore la commenter un peu plus
-    pre : reponses est une liste des réponses à une question sur le format ['réponse', True ou False, 'commentaire']
+    pre : reponses est une liste des réponses à une question sur le format ['réponse', True ou False, 'commentaire', 
+          "identifiant de la réponse selon le questionnaire (bon ça c'est pas clair mais en gros c'est juste pour dire
+          que si dans la fenêtre d'affichage il est mis A devant la réponse et bah ici il y aura un A)"]
     post : retourne True si l'utilisateur a entré une bonne réponse, False sinon. Si plusieurs réponses étaient bonnes
            pour une question, l'utilisateur doit avoir entré toutes les bonnes réponses pour avoir le point, sinon il
            s'est trompé.
