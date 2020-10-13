@@ -1,6 +1,6 @@
 """
 J'étais en train de me faire chier donc j'ai codé ça, normalement ça marche complètement mais il faut encore rajouter des trucs genre au début on doit pouvoir choisir
-entre deux modes : evalutation et comparatif d'évaluation. Il reste juste ça à faire si je dis pas de la merde
+entre deux modes : evalutation et comparatif d'évaluation. Il reste juste ça à faire si je dis pas de la merde. Pour le moment c'est que en mode évaluation.
 """
 
 import random as r
@@ -104,7 +104,6 @@ def play_questionnaire(questionnaire):
         print_reponses(questionnaire[i][1])
         to_append = (demande_rep(questionnaire[i][1]), len(questionnaire[i][1]))
         liste_rep.append(to_append)         # crée la liste des réponses sur le format [(True, 5), ...]
-        print(calcul_res(liste_rep, mode), end="\n\n")   # temporaire
 
     print_result(liste_rep, mode)
 
