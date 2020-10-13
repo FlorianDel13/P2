@@ -1,6 +1,5 @@
 """
-J'étais en train de me faire chier donc j'ai codé ça, normalement ça marche complètement mais il faut encore rajouter des trucs genre au début on doit pouvoir choisir
-entre deux modes : evalutation et comparatif d'évaluation. Il reste juste ça à faire si je dis pas de la merde. Pour le moment c'est que en mode évaluation.
+J'étais en train de me faire chier donc j'ai codé ça, normalement ça marche complètement.
 """
 
 import random as r
@@ -9,8 +8,10 @@ import qcm
 
 def calcul_res(liste, mode):
     """calcule le résultat au questionnaire
-    pre : liste est une liste comportant les réponses au questionnaire présentées sous forme de tuple dont le premier élément est un booléen disant si la réponse
-          était bonne et le deuxième disant le nombre de réponses possibles. Exemple : [(True, 5), (False, 3), ...] """
+    pre : liste est une liste comportant les réponses au questionnaire présentées sous forme de tuple dont le premier
+          élément est un booléen disant si la répons eétait bonne et le deuxième disant le nombre de réponses possibles.
+          Exemple : [(True, 5), (False, 3), ...]
+    post : retourne un str du résultat"""
     result = 0
     if mode == "GENTIL":
         for res in liste:
@@ -29,15 +30,16 @@ def calcul_res(liste, mode):
             else:
                 result -= 1 / (res[1] - 1)  # voir feuille Béranger pour calculs
 
-    return result
+    return str(round(result, 2)) + "/" + str(len(liste))
 
 
 def ordre_aleatoire(liste):
     """ Détermine un ordre aléatoire pour l'affichage des questions ou des réponses ou de n'importe quoi
-    pre : questionnaire est une liste présentée dans le format des listes qui sortent de la fonction qcm.build_questionnaire()
-    post : retourne une liste dont le nombre d'éléments est égal au nombre d'éléments de questionnaire et comportant les int de 0 à
-           ce nombre dans un ordre aléatoire. Exemple pcq explication pas claire: si len(questionnaire) == 5, la fonction peut return
-           la liste suivante : [4, 3, 0, 2, 1]"""
+    pre : questionnaire est une liste présentée dans le format des listes qui sortent de la fonction 
+          qcm.build_questionnaire()
+    post : retourne une liste dont le nombre d'éléments est égal au nombre d'éléments de questionnaire et comportant les
+           int de 0 à ce nombre dans un ordre aléatoire. Exemple pcq explication pas claire: si len(questionnaire) == 5, 
+           la fonction peut return la liste suivante : [4, 3, 0, 2, 1] """
     ordre = [i for i in range(len(liste))]
     r.shuffle(ordre)
     return ordre
@@ -52,13 +54,18 @@ def print_reponses(reponses):
     for i in range(len(reponses)):
         a_afficher = str(lettres[i]) + str(reponses[ordre_rep[i]][0])
         print(a_afficher)
-        reponses[ordre_rep[i]].append(lettres[i][0])  # permet de garder en mémoire quelle réponse est assignée à quelle lettre
-        # pour la fonction qui voit si la réponse est bonne ou pas
+        reponses[ordre_rep[i]].append(lettres[i][0])  # permet de garder en mémoire quelle réponse est assignée à 
+        # quelle lettre pour la fonction qui voit si la réponse est bonne ou pas
     print("")
 
 
 def demande_rep(reponses):
-    """ vraiment pas claire ahah """
+    """ Désolé si elle est pas claire je dois encore la commenter un peu plus
+    pre : reponses est une liste des réponses à une question sur le format ['réponse', True ou False, 'commentaire']
+    post : retourne True si l'utilisateur a entré une bonne réponse, False sinon. Si plusieurs réponses étaient bonnes
+           pour une question, l'utilisateur doit avoir entré toutes les bonnes réponses pour avoir le point, sinon il
+           s'est trompé.
+    """
     rep = input("Votre réponse : ").upper()
     print("")
     reponses_utilisateur = []
@@ -75,6 +82,7 @@ def demande_rep(reponses):
                 reponses_donnees.append(True)
         if elem[1]:
             reponses_bonnes.append(True)
+    
     return reponses_bonnes == reponses_donnees
 
 
@@ -84,7 +92,7 @@ def print_result(reponses, mode):
           mode : str du mode de jeu choisi par l'utilisateur
     post : """
     result = calcul_res(reponses, mode)
-    print("Votre résultat est de " + str(round(result, 2)) + "/" + str(len(reponses)))
+    print("Votre résultat est de " + result)
 
 
 def play_questionnaire(questionnaire):
@@ -92,21 +100,27 @@ def play_questionnaire(questionnaire):
     """
     ordre_quest = ordre_aleatoire(questionnaire)  # génère l'ordre dans lequel les questions vont être affichées
     liste_rep = []
-    mode = input("Quel mode d'évaluation voulez-vous ? Gentil, méchant ou neutre ? ").upper()
-
-    if mode != "méchant".upper() and mode != "GENTIL" and mode != "NEUTRE":    # renvoie un code d'erreur si le mode de
-        # jeu n'existe pas
-        raise KeyError("Ce mode de jeu n'existe pas")
+    type = input("Quel type d'évaluation voulez-vous ? Comparatif d'évaluation ou évaluation ? ").upper()
+    if type == "évaluation".upper():
+        mode = input("Quel mode d'évaluation voulez-vous ? Gentil, méchant ou neutre ? ").upper()
+        if mode != "méchant".upper() and mode != "GENTIL" and mode != "NEUTRE":    # renvoie un code d'erreur si le mode
+            # de jeu n'existe pas
+            raise KeyError("Ce mode de jeu n'existe pas")
 
     for i in ordre_quest:
         print(questionnaire[i][0])
         print_reponses(questionnaire[i][1])
         to_append = (demande_rep(questionnaire[i][1]), len(questionnaire[i][1]))
         liste_rep.append(to_append)         # crée la liste des réponses sur le format [(True, 5), ...]
+        if type != "évaluation".upper():
+            print("En mode gentil, votre résultat jusqu'ici est de " + calcul_res(liste_rep, "GENTIL"))
+            print("En mode méchant, votre résultat jusqu'ici est de " + calcul_res(liste_rep, "MÉCHANT"))
+            print("En mode neutre, votre résultat jusqu'ici est de " + calcul_res(liste_rep, "NEUTRE"), end="\n\n")
 
-    print_result(liste_rep, mode)
+    if type == "évaluation".upper():
+        print_result(liste_rep, mode)
 
 
-questionnaire = qcm.build_questionnaire("QCM2.txt")
+questionnaire = qcm.build_questionnaire("QCM.txt")
 play_questionnaire(questionnaire)
 
