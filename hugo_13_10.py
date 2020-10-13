@@ -2,7 +2,7 @@ import random as r
 import qcm
 
 
-def calcul_res_mode(liste, mode):
+def calcul_res(liste, mode):
     """calcule le résultat au questionnaire
     pre : liste est une liste comportant les réponses au questionnaire présentées sous forme de tuple dont le premier élément est un booléen disant si la réponse
           était bonne et le deuxième disant le nombre de réponses possibles. Exemple : [(True, 5), (False, 3), ...] """
