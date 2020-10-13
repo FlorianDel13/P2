@@ -28,8 +28,7 @@ def calcul_res(liste, mode):
                 result += 1
             else:
                 result -= 1 / (res[1] - 1)  # voir feuille Béranger pour calculs
-    # Exemple de présentation des résultats :
-    # print("Votre score est de " + str(result) + "/" + str(len(liste)))
+
     return result
 
 
