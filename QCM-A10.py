@@ -103,7 +103,9 @@ def play_questionnaire(questionnaire):
     ordre_quest = ordre_aleatoire(questionnaire)  # génère l'ordre dans lequel les questions vont être affichées
     liste_rep = []
     modes = ("méchant".upper(), "GENTIL", "NEUTRE", "1", "2", "3")
-    typ = input("Quel type d'évaluation voulez-vous ? Comparatif d'évaluation (1) ou évaluation (2) ? ").upper()
+    typ=0
+    while typ!='1' and typ!='2':
+        typ = input("Quel type d'évaluation voulez-vous ? Comparatif d'évaluation (1) ou évaluation (2) ? ").upper()
     if typ == "évaluation".upper() or typ == "2":
         mode = input("Quel mode d'évaluation voulez-vous ? Gentil (1), méchant (2) ou neutre (3) ? ").upper()
         if mode not in modes :  # renvoie un code d'erreur si le mode de jeu n'existe pas
